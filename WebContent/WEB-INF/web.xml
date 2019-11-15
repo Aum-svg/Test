@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1" metadata-complete="false">
+
+	<!-- 
+		metadata-complete="true" 表示不允许在servlet上面使用@WebServlet()注解
+	 --> 
+
+	<!-- 
+		添加欢迎页面, 也就是默认启动页面.
+		可以通过welcome-file添加多个启动页面.
+		当我们有多个默认启动页面的时候, 程序就会从上往下找,
+		如果找到, 就显示出来.
+		如果找不到, 就报404
+	 -->
+	<welcome-file-list>
+		<welcome-file>/index.html</welcome-file>
+		<welcome-file>/shouye.html</welcome-file>
+	</welcome-file-list>
+	
+	<!-- 
+		这是配置session的存活时长,请问单位是什么
+	 -->
+	<session-config>
+		<session-timeout>360</session-timeout>
+	</session-config>
+
+	<servlet>
+		<servlet-name>helloServlet</servlet-name>
+		<servlet-class>a.HelloServlet</servlet-class>
+		
+		<!-- 
+			在服务器启动的时候就创建出servlet对象.
+			解决了第一次访问加载慢的问题.
+			
+			这里的值是正整数, 数字越小, 越早启动
+		 -->
+		<load-on-startup>5</load-on-startup>
+		
+	</servlet>
+
+	<!-- 一个servlet中可以对应多个servlet-mapping 在一个servlet-mapping中可以有多个url-pattern 
+		在使用@webServlet的时候也可以使用多路径 -->
+
+	<!-- 这是helloServlet的第一个mapping -->
+	<servlet-mapping>
+		<servlet-name>helloServlet</servlet-name>
+		<url-pattern>/hello</url-pattern>
+	</servlet-mapping>
+
+	<!-- 这是helloServlet的第二个mapping -->
+	<servlet-mapping>
+		<servlet-name>helloServlet</servlet-name>
+		<url-pattern>/hello2</url-pattern>
+		<url-pattern>/hello3</url-pattern>
+		<url-pattern>/hello4</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 
+		(/)的使用 : 如果使用了该种方式, 则在url的工程名后面, 无论怎么写, 都能够访问到.
+		这种方式, 在后面的框架学习中更能够深切体会到.
+	 -->
+	 <!-- <servlet-mapping>
+	 	<servlet-name>helloServlet</servlet-name>
+	 	<url-pattern>/</url-pattern>
+	 </servlet-mapping> -->
+	 
+	 <!-- 
+	 	嵌套路径的使用, 可以在设置权限方面的时候使用
+	  -->
+	 <servlet-mapping>
+	 	<servlet-name>helloServlet</servlet-name>
+	 	<url-pattern>/system/root/hello8</url-pattern>
+	 </servlet-mapping>
+	 
+	 <servlet>
+	 	<servlet-name>aServlet</servlet-name>
+	 	<servlet-class>a.AServlet</servlet-class>
+	 	
+	 	<load-on-startup>1</load-on-startup>
+	 </servlet>
+	 
+	 <servlet-mapping>
+	 	<servlet-name>aServlet</servlet-name>
+	 	<url-pattern>/user/root/*</url-pattern>
+	 </servlet-mapping>
+	 
+	 <!-- 
+	 	重点注意: 这里的*.do, *.html, *.action 是处理以某某为结尾的url
+	 		千万不要在星号的前面加(/)
+	  -->
+	 <servlet-mapping>
+	 	<servlet-name>aServlet</servlet-name>
+	 	<url-pattern>*.do</url-pattern>
+	 </servlet-mapping>
+	 
+	
+
+</web-app>
